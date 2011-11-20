@@ -22,7 +22,7 @@
 
 LOCAL_PATH := $(call my-dir)
 
-ifeq ($(TARGET_DEVICE),galaxys2)
+ifeq ($(filter-out galaxys2 galaxys2att,$(TARGET_DEVICE)),)
 
 include $(CLEAR_VARS)
 

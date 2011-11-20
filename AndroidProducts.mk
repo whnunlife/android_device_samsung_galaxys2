@@ -14,5 +14,12 @@
 # limitations under the License.
 #
 
+ifeq ($(TARGET_DEVICE),galaxys2)
 PRODUCT_MAKEFILES := \
     $(LOCAL_DIR)/full_galaxys2.mk
+endif
+
+ifeq ($(TARGET_DEVICE),galaxys2att)
+PRODUCT_MAKEFILES := \
+    $(LOCAL_DIR)/full_galaxys2att.mk
+endif

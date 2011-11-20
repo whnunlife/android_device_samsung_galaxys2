@@ -28,8 +28,20 @@ TARGET_ARCH_VARIANT_CPU := cortex-a9
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
 TARGET_BOARD_PLATFORM := smdkv310
+
+ifeq ($(TARGET_DEVICE),galaxys2)
 TARGET_BOOTLOADER_BOARD_NAME := GT-I9100
-TARGET_BOARD_INFO_FILE := device/samsung/galaxys2/board-info.txt
+TARGET_BOARD_INFO_FILE := device/samsung/galaxys2/board-info_galaxys2.txt
+TARGET_OTA_ASSERT_DEVICE := galaxys2,GT-I9100,GT-I9100M,GT-I9100T
+-include vendor/samsung/galaxys2/BoardConfigVendor.mk
+endif
+
+ifeq ($(TARGET_DEVICE),galaxys2att)
+TARGET_BOOTLOADER_BOARD_NAME := SGH-I777
+TARGET_BOARD_INFO_FILE := device/samsung/galaxys2/board-info_galaxys2att.txt
+TARGET_OTA_ASSERT_DEVICE := galaxys2att,SGH-I777
+-include vendor/samsung/galaxys2att/BoardConfigVendor.mk
+endif
 
 TARGET_NO_BOOTLOADER := true
 TARGET_NO_RADIOIMAGE := true
@@ -42,7 +54,7 @@ BOARD_NAND_PAGE_SIZE := 4096 -s 128
 BOARD_KERNEL_PAGESIZE := 4096
 BOARD_KERNEL_BASE := 0x40000000
 BOARD_KERNEL_CMDLINE := console=ttySAC2,115200 consoleblank=0
-TARGET_PREBUILT_KERNEL := device/samsung/galaxys2/kernel
+TARGET_PREBUILT_KERNEL := device/samsung/galaxys2/$(TARGET_DEVICE)/kernel
 
 # Filesystem
 TARGET_USERIMAGES_USE_EXT4 := true
@@ -80,13 +92,13 @@ BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_bcmdhd
 WIFI_DRIVER_MODULE_PATH          := "/lib/modules/dhd.ko"
 WIFI_DRIVER_FW_PATH_STA          := "/system/vendor/firmware/bcm4330_sta.bin"
 WIFI_DRIVER_FW_PATH_AP           := "/system/vendor/firmware/bcm4330_aps.bin"
-WIFI_DRIVER_MODULE_NAME          :=  "dhd"
-WIFI_DRIVER_MODULE_ARG           :=  "firmware_path=/system/vendor/firmware/bcm4330_sta.bin nvram_path=/system/etc/nvram_net.txt"
+WIFI_DRIVER_MODULE_NAME          := "dhd"
+WIFI_DRIVER_MODULE_ARG           := "firmware_path=/system/vendor/firmware/bcm4330_sta.bin nvram_path=/system/etc/nvram_net.txt"
 WIFI_BAND                        := 802_11_ABG
 
 # Bluetooth
-#BOARD_HAVE_BLUETOOTH := true
-#BOARD_HAVE_BLUETOOTH_BCM := true
+BOARD_HAVE_BLUETOOTH := true
+BOARD_HAVE_BLUETOOTH_BCM := true
 
 # Vold
 BOARD_VOLD_MAX_PARTITIONS := 12
@@ -101,11 +113,5 @@ BOARD_CUSTOM_GRAPHICS := ../../../device/samsung/galaxys2/recovery/graphics.c
 BOARD_USES_MMCUTILS := true
 BOARD_HAS_NO_MISC_PARTITION := true
 BOARD_HAS_NO_SELECT_BUTTON := true
-
-# assert
-TARGET_OTA_ASSERT_DEVICE := galaxys2,GT-I9100,GT-I9100M,GT-I9100T
-
-# Use the non-open-source parts, if they're present
--include vendor/samsung/galaxys2/BoardConfigVendor.mk
 
 BOARD_CUSTOM_BOOTIMG_MK := device/samsung/galaxys2/shbootimg.mk

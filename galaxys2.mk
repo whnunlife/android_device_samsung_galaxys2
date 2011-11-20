@@ -141,7 +141,7 @@ PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
 	persist.sys.usb.config=mtp
 
 # kernel modules for ramdisk
-RAMDISK_MODULES := $(addprefix device/samsung/galaxys2/modules/,bthid.ko dhd.ko gspca_main.ko j4fs.ko \
+RAMDISK_MODULES := $(addprefix device/samsung/galaxys2/modules/$(TARGET_DEVICE),bthid.ko dhd.ko gspca_main.ko j4fs.ko \
 	scsi_wait_scan.ko Si4709_driver.ko vibrator.ko)
 PRODUCT_COPY_FILES += $(foreach module,\
 	$(RAMDISK_MODULES),\
@@ -149,16 +149,28 @@ PRODUCT_COPY_FILES += $(foreach module,\
 
 # other kernel modules not in ramdisk
 PRODUCT_COPY_FILES += $(foreach module,\
-	$(filter-out $(RAMDISK_MODULES),$(wildcard device/samsung/galaxys2/modules/*.ko)),\
+	$(filter-out $(RAMDISK_MODULES),$(wildcard device/samsung/galaxys2/modules/$(TARGET_DEVICE)/*.ko)),\
 	$(module):system/lib/modules/$(notdir $(module)))
 
 # kernel modules for recovery ramdisk
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxys2/modules/j4fs.ko:recovery/root/lib/modules/j4fs.ko
+    device/samsung/galaxys2/modules/$(TARGET_DEVICE)/j4fs.ko:recovery/root/lib/modules/j4fs.ko
 
 # the kernel itself
 PRODUCT_COPY_FILES += \
-    device/samsung/galaxys2/kernel:kernel
+    device/samsung/galaxys2/kernel/$(TARGET_DEVICE)/:kernel
 
 $(call inherit-product, frameworks/base/build/phone-hdpi-512-dalvik-heap.mk)
+
+ifeq ($(TARGET_DEVICE),galaxys2)
 $(call inherit-product-if-exists, vendor/samsung/galaxys2/galaxys2-vendor.mk)
+endif
+
+ifeq ($(TARGET_DEVICE),galaxys2att)
+$(call inherit-product-if-exists, vendor/samsung/galaxys2att/galaxys2att-vendor.mk)
+endif
+
+
+
+
+
